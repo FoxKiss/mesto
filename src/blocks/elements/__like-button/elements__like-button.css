@@ -1,0 +1,17 @@
+.elements__like-button {
+    max-width: 21px;
+    width: 100%;
+    min-height: 19px;
+    border: 0px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.5s;
+    background: url(../../../images/group.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-left: 70px;
+}
+
+.elements__like-button:hover {
+    opacity: 0.6;
+}
