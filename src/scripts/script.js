@@ -19,8 +19,11 @@ import {
   cardsList,
   cardsForm,
   cardsTemplate,
-  imagesProperties,
-  imagesName,
+  profileName,
+  profileHobby,
+  profilePopSelector,
+  imagesPopSelector,
+  cardsPopSelector
 } from '../utils/constants.js'
 
 
@@ -28,39 +31,41 @@ import {
 
 //Функция открытия Popup для изображений
 function handleCardClick(name, alt, element) {
-  imagesPopClass.openPopup(name, alt, element)
+  const image = element.querySelector('.elements__image')
+  image.addEventListener('click', (evt) => {
+    popupImage.open(name, alt, evt)
+  })
 }
 
 //Функции Открытия Popup для Профиля и Карточек
-function popupEditProfile() {
+function openEditProfilePopup() {
   const userData = userInfo.getUserInfo()
   profileInputName.value = userData.name
   profileInputHobby.value = userData.hobby
-  profileFormPop.openPopup()
+  profileFormPop.open()
   profileFormValid.resetValidation()
 }
 
-function popupEditCards() {
+function openAddCardPopup() {
 
-  cardsFormPop.openPopup()
+  popupAddCard.open()
   cardsFormValid.resetValidation()
 }
 //Функции Создания Классов\\
 
 //class PopupWithImage
-function createImagePopup(popupSelector, imageProp, imageName) {
-  const popup = new PopupWithImage(popupSelector, imageProp, imageName)
+function createImagePopup(popupSelector) {
+  const popup = new PopupWithImage(popupSelector)
   popup.setEventListeners()
   return popup
 }
 
 //Создание классов\\
-
 //Class UserInfo
-const userInfo = new UserInfo('.profile__name', '.profile__profesion')
+const userInfo = new UserInfo(profileName, profileHobby)
 
 //Class PopupWithForm для профиля
-const profileFormPop = new PopupWithForm('#profileEdit',
+const profileFormPop = new PopupWithForm(profilePopSelector,
   {
     submitForm: (data) => {
       userInfo.setUserInfo(data)
@@ -68,17 +73,20 @@ const profileFormPop = new PopupWithForm('#profileEdit',
   })
 
 //class PopupWithImage
-const imagesPopClass = createImagePopup('#imagesPop', imagesProperties, imagesName)
+const popupImage = createImagePopup(imagesPopSelector)
+
+
 
 //class Section/Card
-const startCards = new Section({
-  data: jsStartCards,
-  renderer: (item) => {
+const cardsSection = new Section({data: jsStartCards,
+  renderer: (item) =>{
     const card = new Card(item.name, item.link, item.alt, handleCardClick, cardsTemplate)
     const cardElement = card.generateCard()
-    startCards.addItemApp(cardElement)
+    cardsSection.appendItem(cardElement)
   }
-}, cardsList)
+  }, cardsList)
+
+
 
 //class FormValidator
 const profileFormValid = new FormValidator(profileForm, validationConfig)
@@ -91,40 +99,28 @@ cardsFormValid.enableValidation()
 
 //Создание Карточек и Добавление класса PopupWithForm
 
-const cardsFormPop = new PopupWithForm('#cardsEdit', {
-  submitForm: () => {
-    const formAddCards = new Section({
-      data: [
-        {
-          name: cardsInputName.value,
-          link: cardsInputLink.value,
-          alt: cardsInputName.value,
-        }
-      ],
-      renderer: (item) => {
-        const card = new Card(item.name, item.link, item.alt, handleCardClick, cardsTemplate)
-        const cardElement = card.generateCard()
-        formAddCards.addItemPrep(cardElement)
-      }
-    }, cardsList)
+const popupAddCard = new PopupWithForm(cardsPopSelector, {
+  submitForm: (data) => {
+    const card = new Card(data.place, data.link, data.place, handleCardClick, cardsTemplate)
+    const cardElement = card.generateCard()
+    cardsSection.prependItem(cardElement)
 
     cardsSubmitButton.setAttribute('disabled', true)
     cardsSubmitButton.classList.add(validationConfig.inactiveButtonClass)
-    cardsFormPop.closePopup()
-    formAddCards.renderItems()
+    popupAddCard.close()
   }
 })
 
 
 //Открытие Popup
-profileEditButton.addEventListener('click', popupEditProfile)
-cardsEditButton.addEventListener('click', popupEditCards)
+profileEditButton.addEventListener('click', openEditProfilePopup)
+cardsEditButton.addEventListener('click', openAddCardPopup)
 
 
-startCards.renderItems()
+cardsSection.renderItems()
 
 
-cardsFormPop.setEventListeners()
+popupAddCard.setEventListeners()
 profileFormPop.setEventListeners()
 
 

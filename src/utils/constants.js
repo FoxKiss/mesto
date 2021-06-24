@@ -2,6 +2,8 @@
 //Profile
 const profileInputName = profileForm.querySelector('.popup__input_type_name')
 const profileInputHobby = profileForm.querySelector('.popup__input_type_hobby')
+const profileName = document.querySelector('.profile__name')
+const profileHobby = document.querySelector('.profile__profesion')
 //Cards
 const cardsInputName = document.querySelector('.popup__input_cards-name')
 const cardsInputLink = document.querySelector('.popup__input_cards-link')
@@ -15,9 +17,10 @@ const cardsList = document.querySelector('.elements__list')
 const cardsForm = document.querySelector('#cardsForm')
 // Template для карточек
 const cardsTemplate = document.querySelector('#cardsTemplate')
-//Images Popup
-const imagesProperties = document.querySelector('.popup__images-properties')
-const imagesName = document.querySelector('.popup__images-text')
+//PopupSelectors
+const profilePopSelector = document.querySelector('#profileEdit')
+const cardsPopSelector = document.querySelector('#cardsEdit')
+const imagesPopSelector = document.querySelector('#imagesPop')
 
 
 //Export
@@ -33,6 +36,9 @@ export {
   cardsList,
   cardsForm,
   cardsTemplate,
-  imagesProperties,
-  imagesName,
+  profileHobby,
+  profileName,
+  profilePopSelector,
+  cardsPopSelector,
+  imagesPopSelector
 }

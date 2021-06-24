@@ -16,8 +16,8 @@ export default class PopupWithForm extends Popup {
     return value
   }
 
-  closePopup() {
-    super.closePopup()
+  close() {
+    super.close()
     this._form.reset()
   }
 
@@ -26,7 +26,7 @@ export default class PopupWithForm extends Popup {
     this._form.addEventListener('submit', (evt) => {
       evt.preventDefault()
       this._submitForm(this._getInputValues())
-      this.closePopup()
+      this.close()
     })
   }
 }
