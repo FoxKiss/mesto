@@ -1,4 +1,17 @@
 @import url(../vendor/normalize.css);
+@import url(../vendor/fonts/inter.css);
+
+.root {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  background: #000;
+  color: #fff;
+  font-family: Inter,Helvetica,Arial,sans-serif;
+}
 
 .page {
   max-width: 1280px;
@@ -8,6 +21,8 @@
   flex-direction: column;
   align-items: center;
   background-color: #000000;
+  color: #ffff;
+  margin: 0 auto 0 auto; 
 }
 
 .header {
@@ -58,7 +73,6 @@
   font-weight: 500;
   font-size: 42px;
   line-height: 48px;
-  color: white;
   margin: 0 0 16px 0;
 }
 
@@ -70,7 +84,6 @@
   font-weight: normal;
   font-size: 18px;
   line-height: 22px;
-  color: white;
   margin: 0;
 }
 
@@ -100,6 +113,7 @@
 .cards {
   max-width: 880px;
   width: 100%;
+  margin: 0 0 66px 0;
 }
 
 
@@ -147,6 +161,7 @@
   font-size: 24px;
   line-height: 29px;
   margin: 25px 15px 31px 21px;
+  color: #000000;
 }
 
 .cards__like-button {
@@ -159,4 +174,16 @@
   cursor: pointer;
   padding: 0;
   margin: 0 15px 0 0;
+}
+
+.footer {
+  max-width: 880px;
+  width: 100%;
+}
+.footer__title {
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  color: #545454;
+  margin: 0;
 }
