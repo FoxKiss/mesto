@@ -218,9 +218,6 @@
   color: #545454;
   margin: 0;
 }
-
-
-
 .popup {
   width: 100%;
   position: fixed;
@@ -232,8 +229,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.popup__edit-profile {
   display: none;
 }
+
+.popup_open {
+  display: flex;
+}
+
 
 .popup__container {
   max-width: 430px;
