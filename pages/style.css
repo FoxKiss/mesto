@@ -259,8 +259,35 @@
   display: none;
 }
 
+.popup__images {
+  display: none;
+}
+
 .popup_open {
   display: flex;
+}
+
+
+.popup__image-container {
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center;
+  position: relative;
+}
+
+.popup__image {
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
+.popup__image-name {
+  max-width: 75vw;
+  width: 100%;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  margin: 10px 0 0 0;
 }
 
 

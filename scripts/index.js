@@ -15,9 +15,15 @@ const cardForm = cardPopup.querySelector('#cardForm')
 const cardInputName = cardForm.querySelector('#cardName')
 const cardInputLink = cardForm.querySelector('#cardLink')
 
+//IMAGE POPUP
+const imagesPopup = document.querySelector('.popup__images')
+const cardPopImage = imagesPopup.querySelector('.popup__image')
+const cardPopImageName = imagesPopup.querySelector('.popup__image-name')
+
 //POPUP BUTTON
 const profileCloseButton = profilePopup.querySelector('#profileCloseButton')
 const cardPopCloseButton = cardPopup.querySelector('#cardPopCloseButton')
+const imagesCloseButton = imagesPopup.querySelector('#imagePopCloseButton')
 
 //Открытие/Закрытие PopUp
 function openPopup(popup) {
@@ -44,8 +50,12 @@ cardCreateButton.addEventListener('click', () => {
   openPopup(cardPopup)
 })
 
-cardPopCloseButton.addEventListener('click', () =>{
+cardPopCloseButton.addEventListener('click', () => {
   closePopup(cardPopup)
+})
+
+imagesCloseButton.addEventListener('click', () => {
+  closePopup(imagesPopup)
 })
 
 //Сохранение данных профиля
@@ -60,7 +70,12 @@ function handleEditProfile(evt) {
 profileForm.addEventListener('submit', handleEditProfile)
 
 
-
+function openImagePop(evt) {
+  cardPopImage.src = evt.target.src
+  cardPopImage.alt = evt.target.alt
+  cardPopImageName.textContent = evt.target.alt
+  openPopup(imagesPopup)
+}
 //Создание Карточек
 function createCard(link, name) {
   const cardTemplate = document.querySelector('#cardTemplate').content
@@ -68,16 +83,21 @@ function createCard(link, name) {
   cardElement.querySelector('.cards__image').src = link
   cardElement.querySelector('.cards__image').alt = name
   cardElement.querySelector('.cards__name').textContent = name
+
   const cardLikeButton = cardElement.querySelector('.cards__like-button')
-  cardLikeButton.addEventListener('click', ()=> {
+  cardLikeButton.addEventListener('click', () => {
     cardLikeButton.classList.toggle('cards__like-button_active')
   })
+
   const cardDeleteButton = cardElement.querySelector('.cards__delete-button')
   cardDeleteButton.addEventListener('click', (evt) => {
-    const card = evt.target.closest('.cards__list-element')
-    card.remove()
+    const element = evt.target.closest('.cards__list-element')
+    element.remove()
   })
-  
+
+  cardElement.querySelector('.cards__image')
+    .addEventListener('click', openImagePop)
+
   return cardElement
 }
 jsStartCards.forEach((item) => {
