@@ -68,11 +68,21 @@ function createCard(link, name) {
   cardElement.querySelector('.cards__image').src = link
   cardElement.querySelector('.cards__image').alt = name
   cardElement.querySelector('.cards__name').textContent = name
-
-  cardsList.append(cardElement)
-
-
+  const cardLikeButton = cardElement.querySelector('.cards__like-button')
+  cardLikeButton.addEventListener('click', ()=> {
+    cardLikeButton.classList.toggle('cards__like-button_active')
+  })
+  
+  return cardElement
 }
 jsStartCards.forEach((item) => {
-  createCard(item.link, item.name)
+  cardsList.append(createCard(item.link, item.name))
+})
+
+cardForm.addEventListener('submit', (evt) => {
+  evt.preventDefault()
+  cardsList.prepend(createCard(cardInputLink.value, cardInputName.value))
+
+  cardForm.reset()
+  closePopup(cardPopup)
 })
