@@ -235,6 +235,10 @@
   display: none;
 }
 
+.popup__create-cards {
+  display: none;
+}
+
 .popup_open {
   display: flex;
 }

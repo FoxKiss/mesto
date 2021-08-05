@@ -25,7 +25,6 @@
         </section>
         <section class="cards">
           <ul class="cards__list">
-           
           </ul>
         </section>
       </div>
@@ -33,15 +32,6 @@
         <h2 class="footer__title">© 2020 Mesto Russia</h2>
       </footer>
     </div>
-    <template id="cardTemplate">
-      <li class="cards__list-element">
-        <img class="cards__image" src="." alt=".">
-        <div class="cards__info">
-          <h2 class="cards__name"></h2>
-          <button class="cards__like-button"></button>
-        </div>
-      </li>
-    </template>
     <div class="popup popup__edit-profile">
       <div class="popup__container">
         <h2 class="popup__title">Редактировать профиль</h2>
@@ -57,9 +47,32 @@
         <button id="profileCloseButton" class="popup__close-button" type="button"></button>
       </div>
     </div>
-  </div>
-  <script  src="./scripts/jsStartCards.js"></script>
-  <script  src="./scripts/index.js"></script>
+    <div class="popup popup__create-cards">
+      <div class="popup__container">
+        <h2 class="popup__title">Новое место</h2>
+        <form id="cardForm" class="popup__form">
+          <label class="popup__input-label">
+            <input id="cardName" class="popup__input" type="text" placeholder="Название">
+          </label>
+          <label class="popup__input-label">
+            <input id="cardLink" class="popup__input" type="text" placeholder="Ссылка на картинку">
+          </label>
+          <button class="popup__save-button" type="submit">Сохранить</button>
+        </form>
+        <button id="cardPopCloseButton" class="popup__close-button" type="button"></button>
+      </div>
+    </div>
+    <template id="cardTemplate">
+      <li class="cards__list-element">
+        <img class="cards__image" src="." alt=".">
+        <div class="cards__info">
+          <h2 class="cards__name"></h2>
+          <button class="cards__like-button"></button>
+        </div>
+      </li>
+    </template>
+    <script src="./scripts/jsStartCards.js"></script>
+    <script src="./scripts/index.js"></script>
 </body>
 
 </html>

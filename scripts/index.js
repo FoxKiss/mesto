@@ -3,17 +3,24 @@ const profileName = document.querySelector('.profile__title')
 const profileAbout = document.querySelector('.profile__subtitle')
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profilePopup = document.querySelector('.popup__edit-profile');
-const profileInputName = profilePopup.querySelector('#profileName');
-const profileInputAbout = profilePopup.querySelector('#profileAbout');
 const profileForm = profilePopup.querySelector('#profileForm')
+const profileInputName = profileForm.querySelector('#profileName');
+const profileInputAbout = profileForm.querySelector('#profileAbout');
 
 //CARD
 const cardsList = document.querySelector('.cards__list')
+const cardCreateButton = document.querySelector('.profile__add-button')
+const cardPopup = document.querySelector('.popup__create-cards')
+const cardForm = cardPopup.querySelector('#cardForm')
+const cardInputName = cardForm.querySelector('#cardName')
+const cardInputLink = cardForm.querySelector('#cardLink')
+
 //POPUP BUTTON
 const profileCloseButton = profilePopup.querySelector('#profileCloseButton')
+const cardPopCloseButton = cardPopup.querySelector('#cardPopCloseButton')
 
 //Открытие/Закрытие PopUp
-function openPopup (popup) {
+function openPopup(popup) {
   popup.classList.add('popup_open')
 }
 
@@ -33,8 +40,16 @@ profileCloseButton.addEventListener('click', () => {
   closePopup(profilePopup)
 })
 
+cardCreateButton.addEventListener('click', () => {
+  openPopup(cardPopup)
+})
+
+cardPopCloseButton.addEventListener('click', () =>{
+  closePopup(cardPopup)
+})
+
 //Сохранение данных профиля
-function handleEditProfile (evt) {
+function handleEditProfile(evt) {
   evt.preventDefault();
 
   profileName.textContent = `${profileInputName.value}`
@@ -50,14 +65,14 @@ profileForm.addEventListener('submit', handleEditProfile)
 function createCard(link, name) {
   const cardTemplate = document.querySelector('#cardTemplate').content
   const cardElement = cardTemplate.querySelector('.cards__list-element').cloneNode(true)
-  cardElement.querySelector('.cards__image').src= link
+  cardElement.querySelector('.cards__image').src = link
   cardElement.querySelector('.cards__image').alt = name
   cardElement.querySelector('.cards__name').textContent = name
 
   cardsList.append(cardElement)
-  
-  
+
+
 }
-jsStartCards.forEach((item)=> {
+jsStartCards.forEach((item) => {
   createCard(item.link, item.name)
 })
