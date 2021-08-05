@@ -72,6 +72,11 @@ function createCard(link, name) {
   cardLikeButton.addEventListener('click', ()=> {
     cardLikeButton.classList.toggle('cards__like-button_active')
   })
+  const cardDeleteButton = cardElement.querySelector('.cards__delete-button')
+  cardDeleteButton.addEventListener('click', (evt) => {
+    const card = evt.target.closest('.cards__list-element')
+    card.remove()
+  })
   
   return cardElement
 }

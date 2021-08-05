@@ -157,6 +157,7 @@
 }
 
 .cards__list-element {
+  position: relative;
   max-width: 282px;
   width: 100%;
   min-height: 361px;
@@ -205,6 +206,20 @@
 .cards__like-button_active {
   background: url(../images/likeactive.svg);
   background-repeat: no-repeat
+}
+
+.cards__delete-button {
+  max-width: 18px;
+  width: 100%;
+  min-height: 21px;
+  background: url(../images/Trash.svg);
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 23px;
+  right: 16px;
+  padding: 0;
 }
 
 /*  */
