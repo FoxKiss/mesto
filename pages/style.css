@@ -249,22 +249,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.5s linear; 
 }
 
 .popup__edit-profile {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
 }
 
 .popup__create-cards {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
 }
 
 .popup__images {
-  display: none;
+  visibility: hidden;
+  opacity: 0; 
 }
 
 .popup_open {
-  display: flex;
+  visibility: visible;
+  opacity: 1;
 }
 
 

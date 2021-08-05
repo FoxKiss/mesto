@@ -34,6 +34,13 @@ function closePopup(popup) {
   popup.classList.remove('popup_open')
 }
 
+function openImagePop(evt) {
+  cardPopImage.src = evt.target.src
+  cardPopImage.alt = evt.target.alt
+  cardPopImageName.textContent = evt.target.alt
+  openPopup(imagesPopup)
+}
+
 
 profileEditButton.addEventListener('click', () => {
   profileInputName.value = `${profileName.textContent}`
@@ -70,12 +77,7 @@ function handleEditProfile(evt) {
 profileForm.addEventListener('submit', handleEditProfile)
 
 
-function openImagePop(evt) {
-  cardPopImage.src = evt.target.src
-  cardPopImage.alt = evt.target.alt
-  cardPopImageName.textContent = evt.target.alt
-  openPopup(imagesPopup)
-}
+
 //Создание Карточек
 function createCard(link, name) {
   const cardTemplate = document.querySelector('#cardTemplate').content
@@ -83,6 +85,8 @@ function createCard(link, name) {
   cardElement.querySelector('.cards__image').src = link
   cardElement.querySelector('.cards__image').alt = name
   cardElement.querySelector('.cards__name').textContent = name
+  cardElement.querySelector('.cards__image')
+  .addEventListener('click', openImagePop)
 
   const cardLikeButton = cardElement.querySelector('.cards__like-button')
   cardLikeButton.addEventListener('click', () => {
@@ -95,11 +99,9 @@ function createCard(link, name) {
     element.remove()
   })
 
-  cardElement.querySelector('.cards__image')
-    .addEventListener('click', openImagePop)
-
   return cardElement
 }
+
 jsStartCards.forEach((item) => {
   cardsList.append(createCard(item.link, item.name))
 })
