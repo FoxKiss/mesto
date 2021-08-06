@@ -81,7 +81,7 @@ profileForm.addEventListener('submit', handleEditProfile)
 //Создание Карточек
 function createCard(link, name) {
   const cardTemplate = document.querySelector('#cardTemplate').content
-  const cardElement = cardTemplate.querySelector('.cards__list-element').cloneNode(true)
+  const cardElement = cardTemplate.querySelector('.cards__list_element').cloneNode(true)
   cardElement.querySelector('.cards__image').src = link
   cardElement.querySelector('.cards__image').alt = name
   cardElement.querySelector('.cards__name').textContent = name
@@ -95,7 +95,7 @@ function createCard(link, name) {
 
   const cardDeleteButton = cardElement.querySelector('.cards__delete-button')
   cardDeleteButton.addEventListener('click', (evt) => {
-    const element = evt.target.closest('.cards__list-element')
+    const element = evt.target.closest('.cards__list_element')
     element.remove()
   })
 
