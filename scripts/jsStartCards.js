@@ -1,4 +1,4 @@
-const jsStartCards= [
+export const jsStartCards= [
   {
     name: 'Афины',
     link: './images/afin.jpg'

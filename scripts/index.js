@@ -1,4 +1,14 @@
-import { validationConfig, FormValidator } from './FormValidator.js' 
+import { validationConfig, FormValidator } from './FormValidator.js'
+
+
+import {
+  profileName, profileAbout, profileEditButton, profilePopup, profileForm, profileInputName, profileInputAbout,
+  cardsList, cardCreateButton, cardPopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardPopImage, cardPopImageName,
+  profileCloseButton, cardPopCloseButton, imagesCloseButton
+} from './constants.js'
+
+import {jsStartCards} from './jsStartCards.js'
+
 
 //Открытие/Закрытие PopUp
 function openPopup(popup) {
@@ -109,6 +119,7 @@ cardForm.addEventListener('submit', (evt) => {
   closePopup(cardPopup)
 })
 
+//Валидация форм
 const profileFormValidation = new FormValidator(validationConfig, profileForm)
 profileFormValidation.enableValidation()
 const cardFormValidation = new FormValidator(validationConfig, cardForm)
