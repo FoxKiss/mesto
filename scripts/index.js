@@ -109,7 +109,7 @@ cardForm.addEventListener('submit', (evt) => {
 const validationConfig = ({
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit-button',
+  submitButtonSelector: '.popup__save-button',
   inactiveButtonClass: 'button_inactive',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
@@ -121,16 +121,18 @@ function enableValidation(validationConfig) {
     formElement.addEventListener('submit', (evt) => {
       evt.preventDefault()
     })
-
     setEventListeners(formElement, validationConfig)
   })
 }
 
 function setEventListeners(formElement, validationConfig) {
   const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector))
+  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector)
+  deactiveButton(inputList, buttonElement, validationConfig)
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
       checkInputValidity(formElement, inputElement, validationConfig)
+      deactiveButton(inputList, buttonElement, validationConfig)
     })
   })
 }
@@ -154,7 +156,23 @@ function hideError(formElement, inputElement, validationConfig) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
   inputElement.classList.remove(validationConfig.inputErrorClass)
   errorElement.classList.remove(validationConfig.errorClass)
-  errorElement.textContent = 'errorMessage'
+  errorElement.textContent = ''
+}
+
+function  hasInvalidInput (inputList) { 
+  return inputList.some((inputElement) => { 
+    return !inputElement.validity.valid;
+  }) 
+} 
+
+function deactiveButton (inputList, buttonElement , validationConfig) { 
+  if(hasInvalidInput(inputList)) { 
+      buttonElement.classList.add(validationConfig.inactiveButtonClass) 
+      buttonElement.setAttribute('disabled', true) 
+  } else { 
+      buttonElement.classList.remove(validationConfig.inactiveButtonClass) 
+      buttonElement.removeAttribute('disabled') 
+  } 
 }
 
 enableValidation(validationConfig)
