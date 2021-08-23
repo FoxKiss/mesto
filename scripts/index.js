@@ -1,36 +1,11 @@
-//PROFILE
-const profileName = document.querySelector('.profile__title')
-const profileAbout = document.querySelector('.profile__subtitle')
-const profileEditButton = document.querySelector('.profile__edit-button');
-const profilePopup = document.querySelector('.popup__edit-profile');
-const profileForm = profilePopup.querySelector('#profileForm')
-const profileInputName = profileForm.querySelector('#profileName');
-const profileInputAbout = profileForm.querySelector('#profileAbout');
-
-//CARD
-const cardsList = document.querySelector('.cards__list')
-const cardCreateButton = document.querySelector('.profile__add-button')
-const cardPopup = document.querySelector('.popup__create-cards')
-const cardForm = cardPopup.querySelector('#cardForm')
-const cardInputName = cardForm.querySelector('#cardName')
-const cardInputLink = cardForm.querySelector('#cardLink')
-
-//IMAGE POPUP
-const imagesPopup = document.querySelector('.popup__images')
-const cardPopImage = imagesPopup.querySelector('.popup__image')
-const cardPopImageName = imagesPopup.querySelector('.popup__image-name')
-
-//POPUP BUTTON
-const profileCloseButton = profilePopup.querySelector('#profileCloseButton')
-const cardPopCloseButton = cardPopup.querySelector('#cardPopCloseButton')
-const imagesCloseButton = imagesPopup.querySelector('#imagePopCloseButton')
-
 //Открытие/Закрытие PopUp
 function openPopup(popup) {
+  document.addEventListener('keydown', escClosePop)
   popup.classList.add('popup_open')
 }
 
 function closePopup(popup) {
+  document.removeEventListener('keydown', escClosePop)
   popup.classList.remove('popup_open')
 }
 
@@ -41,7 +16,20 @@ function openImagePop(evt) {
   openPopup(imagesPopup)
 }
 
+function clickCLosePop(popup) {
+  popup.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains('popup_open')) {
+      closePopup(popup)
+    }
+  })
+}
 
+function escClosePop(evt) {
+  const activePop = document.querySelector('.popup_open')
+  if (evt.key === 'Escape') {
+    closePopup(activePop)
+  }
+}
 profileEditButton.addEventListener('click', () => {
   profileInputName.value = `${profileName.textContent}`
   profileInputAbout.value = `${profileAbout.textContent}`
@@ -65,6 +53,9 @@ imagesCloseButton.addEventListener('click', () => {
   closePopup(imagesPopup)
 })
 
+clickCLosePop(profilePopup)
+clickCLosePop(cardPopup)
+clickCLosePop(imagesPopup)
 //Сохранение данных профиля
 function handleEditProfile(evt) {
   evt.preventDefault();
@@ -86,7 +77,7 @@ function createCard(link, name) {
   cardElement.querySelector('.cards__image').alt = name
   cardElement.querySelector('.cards__name').textContent = name
   cardElement.querySelector('.cards__image')
-  .addEventListener('click', openImagePop)
+    .addEventListener('click', openImagePop)
 
   const cardLikeButton = cardElement.querySelector('.cards__like-button')
   cardLikeButton.addEventListener('click', () => {
@@ -113,3 +104,57 @@ cardForm.addEventListener('submit', (evt) => {
   cardForm.reset()
   closePopup(cardPopup)
 })
+
+
+const validationConfig = ({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'button_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+});
+
+function enableValidation(validationConfig) {
+  const formList = Array.from(document.querySelectorAll(validationConfig.formSelector))
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault()
+    })
+
+    setEventListeners(formElement, validationConfig)
+  })
+}
+
+function setEventListeners(formElement, validationConfig) {
+  const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector))
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      checkInputValidity(formElement, inputElement, validationConfig)
+    })
+  })
+}
+
+function checkInputValidity(formElement, inputElement, validationConfig) {
+  if (!inputElement.validity.valid) {
+    showError(formElement, inputElement, inputElement.validationMessage, validationConfig)
+  } else {
+    hideError(formElement, inputElement, validationConfig)
+  }
+}
+
+function showError(formElement, inputElement, errorMessage, validationConfig) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
+  inputElement.classList.add(validationConfig.inputErrorClass)
+  errorElement.classList.add(validationConfig.errorClass)
+  errorElement.textContent = errorMessage
+}
+
+function hideError(formElement, inputElement, validationConfig) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
+  inputElement.classList.remove(validationConfig.inputErrorClass)
+  errorElement.classList.remove(validationConfig.errorClass)
+  errorElement.textContent = 'errorMessage'
+}
+
+enableValidation(validationConfig)

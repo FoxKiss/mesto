@@ -9,3 +9,9 @@
   padding-bottom: 13px; 
   margin-bottom: 30px; 
 }
+
+.popup__input-label {
+  position: relative; 
+  display: flex; 
+  flex-direction: column;
+}
