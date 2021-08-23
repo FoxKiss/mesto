@@ -1,3 +1,5 @@
+import { validationConfig, FormValidator } from './FormValidator.js' 
+
 //Открытие/Закрытие PopUp
 function openPopup(popup) {
   document.addEventListener('keydown', escClosePop)
@@ -7,6 +9,7 @@ function openPopup(popup) {
 function closePopup(popup) {
   document.removeEventListener('keydown', escClosePop)
   popup.classList.remove('popup_open')
+  profileFormValidation.resetValidation()
 }
 
 function openImagePop(evt) {
@@ -102,77 +105,11 @@ cardForm.addEventListener('submit', (evt) => {
   cardsList.prepend(createCard(cardInputLink.value, cardInputName.value))
 
   cardForm.reset()
+  cardFormValidation.resetValidation()
   closePopup(cardPopup)
 })
 
-
-const validationConfig = ({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save-button',
-  inactiveButtonClass: 'button_inactive',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active'
-});
-
-function enableValidation(validationConfig) {
-  const formList = Array.from(document.querySelectorAll(validationConfig.formSelector))
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault()
-    })
-    setEventListeners(formElement, validationConfig)
-  })
-}
-
-function setEventListeners(formElement, validationConfig) {
-  const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector))
-  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector)
-  deactiveButton(inputList, buttonElement, validationConfig)
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', () => {
-      checkInputValidity(formElement, inputElement, validationConfig)
-      deactiveButton(inputList, buttonElement, validationConfig)
-    })
-  })
-}
-
-function checkInputValidity(formElement, inputElement, validationConfig) {
-  if (!inputElement.validity.valid) {
-    showError(formElement, inputElement, inputElement.validationMessage, validationConfig)
-  } else {
-    hideError(formElement, inputElement, validationConfig)
-  }
-}
-
-function showError(formElement, inputElement, errorMessage, validationConfig) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
-  inputElement.classList.add(validationConfig.inputErrorClass)
-  errorElement.classList.add(validationConfig.errorClass)
-  errorElement.textContent = errorMessage
-}
-
-function hideError(formElement, inputElement, validationConfig) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
-  inputElement.classList.remove(validationConfig.inputErrorClass)
-  errorElement.classList.remove(validationConfig.errorClass)
-  errorElement.textContent = ''
-}
-
-function  hasInvalidInput (inputList) { 
-  return inputList.some((inputElement) => { 
-    return !inputElement.validity.valid;
-  }) 
-} 
-
-function deactiveButton (inputList, buttonElement , validationConfig) { 
-  if(hasInvalidInput(inputList)) { 
-      buttonElement.classList.add(validationConfig.inactiveButtonClass) 
-      buttonElement.setAttribute('disabled', true) 
-  } else { 
-      buttonElement.classList.remove(validationConfig.inactiveButtonClass) 
-      buttonElement.removeAttribute('disabled') 
-  } 
-}
-
-enableValidation(validationConfig)
+const profileFormValidation = new FormValidator(validationConfig, profileForm)
+profileFormValidation.enableValidation()
+const cardFormValidation = new FormValidator(validationConfig, cardForm)
+cardFormValidation.enableValidation()
