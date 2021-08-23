@@ -1,14 +1,11 @@
 import { validationConfig, FormValidator } from './FormValidator.js'
-
-
+import { Card } from './Card.js'
 import {
   profileName, profileAbout, profileEditButton, profilePopup, profileForm, profileInputName, profileInputAbout,
   cardsList, cardCreateButton, cardPopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardPopImage, cardPopImageName,
   profileCloseButton, cardPopCloseButton, imagesCloseButton
 } from './constants.js'
-
-import {jsStartCards} from './jsStartCards.js'
-
+import { jsStartCards } from './jsStartCards.js'
 
 //Открытие/Закрытие PopUp
 function openPopup(popup) {
@@ -22,7 +19,7 @@ function closePopup(popup) {
   profileFormValidation.resetValidation()
 }
 
-function openImagePop(evt) {
+ function openImagePop(evt) {
   cardPopImage.src = evt.target.src
   cardPopImage.alt = evt.target.alt
   cardPopImageName.textContent = evt.target.alt
@@ -69,6 +66,7 @@ imagesCloseButton.addEventListener('click', () => {
 clickCLosePop(profilePopup)
 clickCLosePop(cardPopup)
 clickCLosePop(imagesPopup)
+
 //Сохранение данных профиля
 function handleEditProfile(evt) {
   evt.preventDefault();
@@ -80,47 +78,32 @@ function handleEditProfile(evt) {
 }
 profileForm.addEventListener('submit', handleEditProfile)
 
+const cardTemplate = document.querySelector('#cardTemplate')
 
-
-//Создание Карточек
-function createCard(link, name) {
-  const cardTemplate = document.querySelector('#cardTemplate').content
-  const cardElement = cardTemplate.querySelector('.cards__list_element').cloneNode(true)
-  cardElement.querySelector('.cards__image').src = link
-  cardElement.querySelector('.cards__image').alt = name
-  cardElement.querySelector('.cards__name').textContent = name
-  cardElement.querySelector('.cards__image')
-    .addEventListener('click', openImagePop)
-
-  const cardLikeButton = cardElement.querySelector('.cards__like-button')
-  cardLikeButton.addEventListener('click', () => {
-    cardLikeButton.classList.toggle('cards__like-button_active')
-  })
-
-  const cardDeleteButton = cardElement.querySelector('.cards__delete-button')
-  cardDeleteButton.addEventListener('click', (evt) => {
-    const element = evt.target.closest('.cards__list_element')
-    element.remove()
-  })
-
+//Создание карточек
+function createCard(link, name, template) {
+  const card = new Card (link, name, template)
+  const cardElement = card.generateCard()
   return cardElement
 }
 
 jsStartCards.forEach((item) => {
-  cardsList.append(createCard(item.link, item.name))
+  cardsList.append(createCard(item.link, item.name, cardTemplate))
 })
 
 cardForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
-  cardsList.prepend(createCard(cardInputLink.value, cardInputName.value))
+  cardsList.prepend(createCard(cardInputLink.value, cardInputName.value, cardTemplate))
 
   cardForm.reset()
   cardFormValidation.resetValidation()
   closePopup(cardPopup)
 })
 
-//Валидация форм
+//Валидация
 const profileFormValidation = new FormValidator(validationConfig, profileForm)
 profileFormValidation.enableValidation()
 const cardFormValidation = new FormValidator(validationConfig, cardForm)
 cardFormValidation.enableValidation()
+
+export {openImagePop}

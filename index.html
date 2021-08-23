@@ -54,11 +54,11 @@
         <h2 class="popup__title">Новое место</h2>
         <form id="cardForm" class="popup__form" novalidate>
           <label class="popup__input-label">
-            <input id="cardName" class="popup__input" type="text" placeholder="Название"required>
+            <input id="cardName" class="popup__input" type="text" placeholder="Название" required minlength="2" maxlength="30">
             <span class="popup__input-error cardName-error"></span>
           </label>
           <label class="popup__input-label">
-            <input id="cardLink" class="popup__input" type="url" placeholder="Ссылка на картинку" required minlength="2" maxlength="30">
+            <input id="cardLink" class="popup__input" type="url" placeholder="Ссылка на картинку" required>
             <span class="popup__input-error cardLink-error"></span>
           </label>
           <button class="popup__save-button" type="submit">Сохранить</button>
@@ -76,7 +76,7 @@
     <template id="cardTemplate">
       <li class="cards__list_element">
         <button type="button" class="cards__delete-button"></button>
-        <img class="cards__image" src="." alt=".">
+        <img class="cards__image" alt=".">
         <div class="cards__info">
           <h2 class="cards__name"></h2>
           <button type="button" class="cards__like-button"></button>
@@ -87,6 +87,7 @@
     <script type="module" src="./scripts/constants.js"></script>
     <script type="module" src="./scripts/jsStartCards.js"></script>
     <script type="module" src="./scripts/index.js"></script>
+    <script type="module" src="./scripts/Card.js"></script>
 </body>
 
 </html>
