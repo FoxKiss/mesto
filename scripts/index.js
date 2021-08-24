@@ -1,109 +1,97 @@
-import { validationConfig, FormValidator } from './FormValidator.js'
-import { Card } from './Card.js'
+import { validationConfig, FormValidator } from '../components/FormValidator.js'
+import Card from '../components/Card.js'
+import UserInfo from '../components/User.info.js'
+import PopupWithImage from '../components/PopupWithImage.js'
+import PopupWithForm from '../components/PopupWithForm.js'
+import Section from '../components/Section.js'
 import {
   profileName, profileAbout, profileEditButton, profilePopup, profileForm, profileInputName, profileInputAbout,
   cardsList, cardCreateButton, cardPopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardPopImage, cardPopImageName,
-  profileCloseButton, cardPopCloseButton, imagesCloseButton
-} from './constants.js'
-import { jsStartCards } from './jsStartCards.js'
+  profileCloseButton, cardPopCloseButton, imagesCloseButton, cardTemplate
+} from '../utils/constants.js'
+import { jsStartCards } from '../utils/jsStartCards.js'
 
-//Открытие/Закрытие PopUp
-function openPopup(popup) {
-  document.addEventListener('keydown', escClosePop)
-  popup.classList.add('popup_open')
-}
 
-function closePopup(popup) {
-  document.removeEventListener('keydown', escClosePop)
-  popup.classList.remove('popup_open')
-  profileFormValidation.resetValidation()
-}
+//Создание Классов\\
 
- function openImagePop(evt) {
-  cardPopImage.src = evt.target.src
-  cardPopImage.alt = evt.target.alt
-  cardPopImageName.textContent = evt.target.alt
-  openPopup(imagesPopup)
-}
+//PopupWithForm для Карточек и Профиля
+const popupWithCard = new PopupWithForm(cardPopup,
+  {
+    submitForm: (data) => {
+      const cardElement = createCard(data)
+      cardsSection.prependItem(cardElement)
 
-function clickCLosePop(popup) {
-  popup.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('popup_open')) {
-      closePopup(popup)
+      popupWithCard.closePopup()
     }
   })
-}
 
-function escClosePop(evt) {
-  const activePop = document.querySelector('.popup_open')
-  if (evt.key === 'Escape') {
-    closePopup(activePop)
+const popupWithProfile = new PopupWithForm(profilePopup,
+  {
+    submitForm: (data) => {
+      userInfo.setUserInfo(data)
+    }
+  })
+
+//PopupWithImage
+const popupWithImage = new PopupWithImage(imagesPopup)
+popupWithImage.setEventListeners()
+
+//UserInfo
+const userInfo = new UserInfo(profileName, profileAbout)
+
+//Section
+const cardsSection = new Section({
+  data: jsStartCards,
+  renderer: (item) => {
+    const cardElement = createCard(item)
+    cardsSection.appendItem(cardElement)
   }
-}
-profileEditButton.addEventListener('click', () => {
-  profileInputName.value = `${profileName.textContent}`
-  profileInputAbout.value = `${profileAbout.textContent}`
+}, cardsList)
 
-  openPopup(profilePopup)
-})
-
-profileCloseButton.addEventListener('click', () => {
-  closePopup(profilePopup)
-})
-
-cardCreateButton.addEventListener('click', () => {
-  openPopup(cardPopup)
-})
-
-cardPopCloseButton.addEventListener('click', () => {
-  closePopup(cardPopup)
-})
-
-imagesCloseButton.addEventListener('click', () => {
-  closePopup(imagesPopup)
-})
-
-clickCLosePop(profilePopup)
-clickCLosePop(cardPopup)
-clickCLosePop(imagesPopup)
-
-//Сохранение данных профиля
-function handleEditProfile(evt) {
-  evt.preventDefault();
-
-  profileName.textContent = `${profileInputName.value}`
-  profileAbout.textContent = `${profileInputAbout.value}`
-
-  closePopup(profilePopup)
-}
-profileForm.addEventListener('submit', handleEditProfile)
-
-const cardTemplate = document.querySelector('#cardTemplate')
-
-//Создание карточек
-function createCard(link, name, template) {
-  const card = new Card (link, name, template)
+//Класс Card и функция создания карточек
+function createCard(item) {
+  const card = new Card(item.link, item.name, cardTemplate, handleCardClick)
   const cardElement = card.generateCard()
+
   return cardElement
 }
 
-jsStartCards.forEach((item) => {
-  cardsList.append(createCard(item.link, item.name, cardTemplate))
-})
 
-cardForm.addEventListener('submit', (evt) => {
-  evt.preventDefault()
-  cardsList.prepend(createCard(cardInputLink.value, cardInputName.value, cardTemplate))
+//Функции\\
 
-  cardForm.reset()
+//Открытие и закрытие Popup
+function openProfilePopup() {
+  const userData = userInfo.getUserInfo()
+  profileInputName.value = userData.name
+  profileInputAbout.value = userData.about
+  popupWithProfile.openPopup()
+}
+
+function openCardPopup() {
+  popupWithCard.openPopup()
+
   cardFormValidation.resetValidation()
-  closePopup(cardPopup)
-})
+}
 
-//Валидация
+function handleCardClick(evt) {
+  popupWithImage.openPopup(evt)
+}
+
+//Валидация\\
 const profileFormValidation = new FormValidator(validationConfig, profileForm)
 profileFormValidation.enableValidation()
 const cardFormValidation = new FormValidator(validationConfig, cardForm)
 cardFormValidation.enableValidation()
 
-export {openImagePop}
+
+
+//
+profileEditButton.addEventListener('click', openProfilePopup)
+popupWithProfile.setEventListeners()
+
+cardCreateButton.addEventListener('click', openCardPopup)
+popupWithCard.setEventListeners()
+
+cardsSection.renderItems()
+
+

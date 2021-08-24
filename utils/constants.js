@@ -14,6 +14,8 @@ const cardPopup = document.querySelector('.popup__create-cards');
 const cardForm = cardPopup.querySelector('#cardForm');
 const cardInputName = cardForm.querySelector('#cardName');
 const cardInputLink = cardForm.querySelector('#cardLink');
+const cardTemplate = document.querySelector('#cardTemplate')
+
 
 //IMAGE POPUP
 const imagesPopup = document.querySelector('.popup__images');
@@ -27,6 +29,6 @@ const imagesCloseButton = imagesPopup.querySelector('#imagePopCloseButton');
 
 export {
   profileName, profileAbout, profileEditButton, profilePopup, profileForm, profileInputName, profileInputAbout,
-  cardsList, cardCreateButton, cardPopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardPopImage, cardPopImageName,
+  cardsList, cardCreateButton, cardPopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardTemplate, cardPopImage, cardPopImageName,
   profileCloseButton, cardPopCloseButton, imagesCloseButton
 }

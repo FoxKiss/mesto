@@ -1,11 +1,10 @@
-import { openImagePop } from "./index.js"
-
- class Card {
-  constructor(link, name, template) {
+export default class Card {
+  constructor(link, name, template, handleCardClick) {
     this._cardLink = link
     this._cardName = name
     this._cardTemplate = template
     this._cardElement = this._getTemplate()
+    this._handleCardClick = handleCardClick
   }
 
   _getTemplate() {
@@ -40,7 +39,9 @@ import { openImagePop } from "./index.js"
 
   _openImageCard() {
     this._cardElement.querySelector('.cards__image')
-    .addEventListener('click', openImagePop)
+      .addEventListener('click', (evt) => {
+        this._handleCardClick(evt)
+      })
   }
 
   _setEventListeners() {
@@ -50,4 +51,4 @@ import { openImagePop } from "./index.js"
   }
 }
 
-export {Card}
+export { Card }
