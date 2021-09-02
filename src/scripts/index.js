@@ -1,3 +1,6 @@
+import '../pages/style.css';
+
+
 import { validationConfig, FormValidator } from '../components/FormValidator.js'
 import Card from '../components/Card.js'
 import UserInfo from '../components/User.info.js'
@@ -64,12 +67,12 @@ function openProfilePopup() {
   const userData = userInfo.getUserInfo()
   profileInputName.value = userData.name
   profileInputAbout.value = userData.about
+  profileFormValidation.resetValidation()
   popupWithProfile.openPopup()
 }
 
 function openCardPopup() {
   popupWithCard.openPopup()
-
   cardFormValidation.resetValidation()
 }
 
