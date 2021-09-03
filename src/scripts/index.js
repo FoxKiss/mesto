@@ -11,8 +11,6 @@ import {
   cardsList, cardCreateButton, cardPopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardPopImage, cardPopImageName,
   profileCloseButton, cardPopCloseButton, imagesCloseButton, cardTemplate
 } from '../utils/constants.js'
-import { jsStartCards } from '../utils/jsStartCards.js'
-
 
 
 class Api {
@@ -77,7 +75,6 @@ class Api {
     }).then(this._checkResponse)
   }
 }
-
 //Создание Классов\\
 //Api
 const api = new Api('https://mesto.nomoreparties.co/v1/cohort-27', '40f69e37-e35f-44b4-a4bd-e53ae77f767e')

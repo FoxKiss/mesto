@@ -74,6 +74,26 @@
         <button id="imagePopCloseButton" class="popup__close-button" type="button"></button>
       </div>
     </div>
+    <div class="popup popup__delete_card">
+      <div class="popup__container">
+        <h2 class="popup__title popup__title_delete">Вы уверены?</h2>
+        <button class="popup__save-button" type="submit">Да</button>
+        <button id="popupDeleteCloseButton" class="popup__close-button" type="button"></button>
+      </div>
+    </div>
+    <div class="popup popup__change-avatar">
+      <div class="popup__container">
+        <h2 class="popup__title">Обновить Аватар</h2>
+        <form id="avatarForm" class="popup__form" novalidate>
+          <label class="popup__input-label">
+            <input id="avatarLink" name="avatar" class="popup__input" type="url" placeholder="Введите ссылку" required>
+            <span class="popup__input-error avatarLink-error"></span>
+          </label>
+          <button class="popup__save-button" type="submit">Сохранить</button>
+        </form>
+        <button id="popupAvatarCloseButton" class="popup__close-button" type="button"></button>
+      </div>
+    </div>
     <template id="cardTemplate">
       <li class="cards__list_element">
         <button type="button" class="cards__delete-button"></button>

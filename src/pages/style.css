@@ -8,8 +8,6 @@
 @import url(../blocks/header/header.css);
 
 
-
-
 /*PROFILE*/
 @import url(../blocks/profile/profile.css);
 @import url(../blocks/profile/__avatar/profile__avatar.css);
@@ -55,3 +53,6 @@
 @import url(../blocks/popup/__close/popup__close-button.css);
 @import url(../blocks/popup/__input/_type_error/popup__input_type_error.css);
 @import url(../blocks/button/button_inactive.css);
+@import url(../blocks/popup/__title/_delete/popup__title_delete.css);
+@import url(../blocks/popup/__delete/popup__delete_card.css);
+@import url(../blocks/popup/__change/popup__change-avatar.css);

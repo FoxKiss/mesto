@@ -1,0 +1,4 @@
+.popup__delete_card {
+  visibility: hidden;
+  opacity: 0;
+}

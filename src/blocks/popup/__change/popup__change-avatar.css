@@ -1,0 +1,4 @@
+.popup__change-avatar {
+  visibility: hidden;
+  opacity: 0;
+}
