@@ -1,6 +1,9 @@
+//TOKEN
+const token = '40f69e37-e35f-44b4-a4bd-e53ae77f767e'
 //PROFILE
 const profileName = document.querySelector('.profile__title');
 const profileAbout = document.querySelector('.profile__subtitle');
+const profileAvatar = document.querySelector('.profile__avatar')
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profilePopup = document.querySelector('.popup__edit-profile');
 const profileForm = profilePopup.querySelector('#profileForm');
@@ -28,7 +31,7 @@ const cardPopCloseButton = cardPopup.querySelector('#cardPopCloseButton');
 const imagesCloseButton = imagesPopup.querySelector('#imagePopCloseButton');
 
 export {
-  profileName, profileAbout, profileEditButton, profilePopup, profileForm, profileInputName, profileInputAbout,
+  profileName, profileAbout, profileAvatar, profileEditButton, profilePopup, profileForm, profileInputName, profileInputAbout,
   cardsList, cardCreateButton, cardPopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardTemplate, cardPopImage, cardPopImageName,
-  profileCloseButton, cardPopCloseButton, imagesCloseButton
+  profileCloseButton, cardPopCloseButton, imagesCloseButton, token
 }
