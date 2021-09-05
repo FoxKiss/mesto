@@ -12,7 +12,7 @@
   background-position: center;
   border: none;
   cursor: pointer;
-  transition: 0.5s
+  transition: 0.5s;
 }
 
 .profile__avatar_edit:hover {
