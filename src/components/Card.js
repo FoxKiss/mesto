@@ -1,10 +1,19 @@
 export default class Card {
-  constructor(link, name, template, handleCardClick) {
-    this._cardLink = link
-    this._cardName = name
+  constructor(card, template, handleCardClick, currentUser, handleCardDelete, activeLike, deactiveLike) {
+    this._card = card
+    this._cardLink = card.link
+    this._cardName = card.name
+    this._userId = card.owner._id
+    this._currentUser = currentUser
     this._cardTemplate = template
     this._cardElement = this._getTemplate()
     this._handleCardClick = handleCardClick
+    this._handleCardDelete = handleCardDelete
+    this._activeLike = activeLike
+    this._deactiveLike = deactiveLike
+    this._countLike = card.likes
+    this._cardLikeButton = this._cardElement.querySelector('.cards__like-button')
+    this._cardLikeNumber = this._cardElement.querySelector('.cards__like-number')
   }
 
   _getTemplate() {
@@ -18,6 +27,11 @@ export default class Card {
     this._cardElement.querySelector('.cards__image').src = this._cardLink
     this._cardElement.querySelector('.cards__image').alt = this._cardName
     this._cardElement.querySelector('.cards__name').textContent = this._cardName
+    this._cardElement.querySelector('.cards__like-number').textContent = this._countLike.length
+    this._cardDeleteButton = this._cardElement.querySelector('.cards__delete-button')
+    if (this._userId === this._currentUser) {
+      this._cardDeleteButton.classList.remove('hide_delete-button')
+    }
     this._setEventListeners()
     return this._cardElement
   }
@@ -25,16 +39,39 @@ export default class Card {
   _likeCard() {
     this._cardLikeButton = this._cardElement.querySelector('.cards__like-button')
     this._cardLikeButton.addEventListener('click', () => {
-      this._cardLikeButton.classList.toggle('cards__like-button_active')
+      if(this._cardLikeButton.classList.contains('cards__like-button_active')) {
+        this._deactiveLike()
+      } else {
+        this._activeLike()
+      }
     })
   }
 
-  _deleteCard() {
-    this._cardDeleteButton = this._cardElement.querySelector('.cards__delete-button')
-    this._cardDeleteButton.addEventListener('click', (evt) => {
-      const element = evt.target.closest('.cards__list_element')
-      element.remove()
+  likesNumber(data) {
+    return String(data.likes.length)
+  }
+
+  activeLike(data) {
+    this._cardLikeButton.classList.add('cards__like-button_active')
+    this._cardLikeNumber.textContent = this.likesNumber(data)
+  }
+
+  deactiveLike(data) {
+    this._cardLikeButton.classList.remove('cards__like-button_active')
+    this._cardLikeNumber.textContent = this.likesNumber(data)
+  }
+
+  _currentUserLike() {
+    this._countLike.forEach((like) => {
+      if(like._id === this._currentUser) {
+        this._cardLikeButton.classList.add('cards__like-button_active')
+      }
     })
+  }
+
+
+  deleteCard() {
+    this._cardElement.remove();
   }
 
   _openImageCard() {
@@ -45,9 +82,12 @@ export default class Card {
   }
 
   _setEventListeners() {
+    this._currentUserLike()
     this._likeCard()
-    this._deleteCard()
     this._openImageCard()
+    this._cardDeleteButton.addEventListener('click', (evt) => {
+      this._handleCardDelete()
+    })
   }
 }
 

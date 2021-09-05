@@ -9,9 +9,10 @@ import Section from '../components/Section.js'
 import {
   profileName, profileAbout, profileEditButton, profilePopup, profileForm, profileInputName, profileInputAbout,
   cardsList, cardCreateButton, cardPopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardPopImage, cardPopImageName,
-  profileCloseButton, cardPopCloseButton, imagesCloseButton, cardTemplate
+  cardTemplate, deletePopup, deleteSubmitButton, avatarPopup, profileAvatar, avatarEditButton, avatarForm
 } from '../utils/constants.js'
-
+import PopupWithDelete from '../components/popupWithDelete.js';
+const currentUser = 'b488a961da3702e22c420ff1'
 
 class Api {
   constructor(baseUrl, token) {
@@ -74,12 +75,61 @@ class Api {
       })
     }).then(this._checkResponse)
   }
+
+  deleteCard(_id) {
+    return fetch(`${this._baseUrl}/cards/${_id}`, {
+      method: 'DELETE',
+      headers:
+      {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
+    }).then(() => {
+      this._checkResponse
+    })
+  }
+
+  activeLike(data) {
+    return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
+      method: 'PUT',
+      headers:
+      {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
+    }).then(this._checkResponse)
+  }
+
+
+  deactiveLike(data) {
+    return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
+      method: 'DELETE',
+      headers:
+      {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
+    }).then(this._checkResponse)
+  }
+
+  setAvatar(data) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        avatar: data.avatar
+      })
+    }).then(this._parseResponse)
+  }
 }
 //Создание Классов\\
 //Api
 const api = new Api('https://mesto.nomoreparties.co/v1/cohort-27', '40f69e37-e35f-44b4-a4bd-e53ae77f767e')
 
-//PopupWithForm для Карточек и Профиля
+//PopupWithForm для Карточек ,Профиля и Аватара
 const popupWithCard = new PopupWithForm(cardPopup,
   {
     submitForm: (data) => {
@@ -99,18 +149,32 @@ const popupWithProfile = new PopupWithForm(profilePopup,
   {
     submitForm: (data) => {
       api.setInfo(data)
-      .then((data) => {
-        userInfo.setUserInfo(data)
-      })
+        .then((data) => {
+          userInfo.setUserInfo(data)
+        })
     }
   })
+
+const popupWithAvatar = new PopupWithForm(avatarPopup, {
+  submitForm: (data) => {
+    api.setAvatar(data)
+    .then((res) => {
+      userInfo.setUserAvatar(res)
+      popupWithAvatar.closePopup()
+    })
+  }
+})
 
 //PopupWithImage
 const popupWithImage = new PopupWithImage(imagesPopup)
 popupWithImage.setEventListeners()
 
+//PopupWithDelete
+const popupWithDelete = new PopupWithDelete(deletePopup)
+
+
 //UserInfo
-const userInfo = new UserInfo(profileName, profileAbout)
+const userInfo = new UserInfo(profileName, profileAbout, profileAvatar)
 
 //Section
 const cardsSection = new Section({
@@ -119,15 +183,38 @@ const cardsSection = new Section({
     cardsSection.appendItem(cardElement)
   }
 }, cardsList)
-
 //Класс Card и функция создания карточек
 function createCard(item) {
-  const card = new Card(item.link, item.name, cardTemplate, handleCardClick)
+  const card = new Card(item, cardTemplate, handleCardClick, currentUser,
+    () => {
+      popupWithDelete.openPopup()
+      popupWithDelete.getSubmit(() => {
+        api.deleteCard(item._id)
+          .then(() => {
+            card.deleteCard()
+            popupWithDelete.closePopup()
+          })
+      })
+    },
+
+    () => {
+      api.activeLike(card._card)
+        .then((data) => {
+          card.activeLike(data)
+        })
+    },
+    () => {
+      api.deactiveLike(card._card)
+        .then((data) => {
+          card.deactiveLike(data)
+        })
+
+    }
+  )
   const cardElement = card.generateCard()
 
   return cardElement
 }
-
 
 //Функции\\
 
@@ -145,6 +232,10 @@ function openCardPopup() {
   cardFormValidation.resetValidation()
 }
 
+function openAvatarPopup() {
+  popupWithAvatar.openPopup()
+}
+
 function handleCardClick(evt) {
   popupWithImage.openPopup(evt)
 }
@@ -154,11 +245,12 @@ const profileFormValidation = new FormValidator(validationConfig, profileForm)
 profileFormValidation.enableValidation()
 const cardFormValidation = new FormValidator(validationConfig, cardForm)
 cardFormValidation.enableValidation()
+const avatarFormValidation = new FormValidator(validationConfig, avatarForm)
+avatarFormValidation.enableValidation()
 
 //Начальная информация о пользователе и Карточки с сервера
 Promise.all([api.getInfo(), api.getStartCards()])
   .then(([userData, cards]) => {
-    const userId = userData._id
     userInfo.setUserInfo(userData)
     cardsSection.renderItems(cards)
   })
@@ -172,5 +264,13 @@ popupWithProfile.setEventListeners()
 
 cardCreateButton.addEventListener('click', openCardPopup)
 popupWithCard.setEventListeners()
+
+avatarEditButton.addEventListener('click', openAvatarPopup)
+popupWithDelete.setEventListeners()
+popupWithAvatar.setEventListeners()
+
+
+
+
 
 cardsSection.renderItems()

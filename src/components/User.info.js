@@ -1,7 +1,10 @@
+import { avatarPopup } from "../utils/constants"
+
 export default class UserInfo {
-  constructor(name, about) {
+  constructor(name, about, avatar) {
     this._name = name
     this._about = about
+    this._avatar = avatar
   }
 
   getUserInfo() {
@@ -12,8 +15,13 @@ export default class UserInfo {
     return user
   }
 
-  setUserInfo({name, about}) {
-    this._name.textContent = name
-    this._about.textContent = about
+  setUserInfo(data) {
+    this._name.textContent = data.name
+    this._about.textContent = data.about
+    this._avatar.src = data.avatar
+  }
+
+  setUserAvatar(data) {
+    this._avatar.src = data._avatar
   }
 }

@@ -25,13 +25,18 @@ const imagesPopup = document.querySelector('.popup__images');
 const cardPopImage = imagesPopup.querySelector('.popup__image');
 const cardPopImageName = imagesPopup.querySelector('.popup__image-name');
 
-//POPUP BUTTON
-const profileCloseButton = profilePopup.querySelector('#profileCloseButton');
-const cardPopCloseButton = cardPopup.querySelector('#cardPopCloseButton');
-const imagesCloseButton = imagesPopup.querySelector('#imagePopCloseButton');
+//DELETE POPUP
+const deletePopup = document.querySelector('.popup__delete_card')
+const deleteSubmitButton = document.querySelector('#deleteSubmitButton')
+
+//AVATAR POPUP
+const avatarPopup = document.querySelector('.popup__change-avatar')
+const avatarEditButton = document.querySelector('.profile__avatar_edit')
+const avatarForm = document.querySelector('#avatarForm')
+
 
 export {
-  profileName, profileAbout, profileAvatar, profileEditButton, profilePopup, profileForm, profileInputName, profileInputAbout,
-  cardsList, cardCreateButton, cardPopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardTemplate, cardPopImage, cardPopImageName,
-  profileCloseButton, cardPopCloseButton, imagesCloseButton, token
+  profileName, profileAbout, profileAvatar, avatarPopup, profileEditButton, profilePopup, profileForm, profileInputName, profileInputAbout,
+  cardsList, cardCreateButton, cardPopup, deletePopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardTemplate, cardPopImage, cardPopImageName,
+  token,deleteSubmitButton, avatarEditButton,avatarForm
 }
