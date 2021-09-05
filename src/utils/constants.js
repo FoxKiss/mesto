@@ -30,7 +30,7 @@ const deletePopup = document.querySelector('.popup_delete_card')
 const deleteSubmitButton = document.querySelector('#deleteSubmitButton')
 
 //AVATAR POPUP
-const avatarPopup = document.querySelector('.popup__change-avatar')
+const avatarPopup = document.querySelector('.popup_change-avatar')
 const avatarEditButton = document.querySelector('.profile_avatar_edit')
 const avatarForm = document.querySelector('#avatarForm')
 
