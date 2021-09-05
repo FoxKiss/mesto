@@ -1,74 +1,99 @@
-
-
-
-class аApi {
-  constructor(token, baseUrl) {
-    this._token = token
+export default class Api {
+  constructor(baseUrl, token) {
     this._baseUrl = baseUrl
+    this._token = token
   }
 
-  _analysisResponse(res) {
-    if (res.ok) {
+  _checkResponse(res) {
+    if (res) {
       return res.json()
     } return Promise.reject(`Ошибка: ${res.status}`)
-  }
-
-  getStartCards() {
-    return fetch(`${this._baseUrl}/cards`, {
-      method: 'GET',
-      headers: {
-        authorization: this._token,
-      },
-    })
-      .then((res) => {
-        this._analysisResponse(res)
-      })
-  }
-
-  createCard(data) {
-    return fetch(`${this._baseUrl}/cards`, {
-      method: 'POST',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: data.name,
-        link: data.link
-      })
-    })
-      .then((res) => {
-        this._analysisResponse(res)
-      })
   }
 
   getInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
-      headers: {
-        authorization: this._token,
-      }
-    })
-      .then((res) => {
-        this._analysisResponse(res)
-      })
+      headers:
+      {
+        authorization: this._token
+      },
+    }).then(this._checkResponse)
   }
 
   setInfo(data) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: {
+      headers:
+      {
         authorization: this._token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name: data.name,
-        about: data.link
+        about: data.about
       }),
-    })
-      .then((res) => {
-        this._analysisResponse(res)
+    }).then(this._checkResponse)
+  }
+
+  getStartCards() {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: 'GET',
+      headers:
+      {
+        authorization: this._token
+      }
+    }).then(this._checkResponse)
+  }
+
+  postCard(data) {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: 'POST',
+      headers:
+      {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: data.name,
+        link: data.link
       })
+    }).then(this._checkResponse)
+  }
+
+  deleteCard(_id) {
+    return fetch(`${this._baseUrl}/cards/${_id}`, {
+      method: 'DELETE',
+      headers:
+      {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
+    }).then(() => {
+      this._checkResponse
+    })
+  }
+
+  activeLike(data) {
+    return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
+      method: 'PUT',
+      headers:
+      {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
+    }).then(this._checkResponse)
+  }
+
+
+  deactiveLike(data) {
+    return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
+      method: 'DELETE',
+      headers:
+      {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
+    }).then(this._checkResponse)
   }
 
   setAvatar(data) {
@@ -81,48 +106,6 @@ class аApi {
       body: JSON.stringify({
         avatar: data.avatar
       })
-    })
-      .then((res) => {
-        this._analysisResponse(res)
-      })
-  }
-
-  deleteCard(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}`, {
-      method: 'DELETE',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((res) => {
-        this._parseResponse(res)
-      })
-  }
-
-  activeLike(data) {
-    return fetch(`${this._baseUrl}/cards/likes/${data.cardId}`, {
-      method: 'PUT',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((res) => {
-        this._parseResponse(res)
-      })
-  }
-
-  deactiveLike(data) {
-    return fetch(`${this._baseUrl}/cards/likes/${data.cardId}`, {
-      method: 'DELETE',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((res) => {
-        this._parseResponse(res)
-      })
+    }).then(this._parseResponse)
   }
 }

@@ -6,6 +6,7 @@ import UserInfo from '../components/User.info.js'
 import PopupWithImage from '../components/PopupWithImage.js'
 import PopupWithForm from '../components/PopupWithForm.js'
 import Section from '../components/Section.js'
+import Api from '../components/Api.js';
 import {
   profileName, profileAbout, profileEditButton, profilePopup, profileForm, profileInputName, profileInputAbout,
   cardsList, cardCreateButton, cardPopup, cardForm, cardInputName, cardInputLink, imagesPopup, cardPopImage, cardPopImageName,
@@ -14,117 +15,6 @@ import {
 import PopupWithDelete from '../components/popupWithDelete.js';
 const currentUser = 'b488a961da3702e22c420ff1'
 
-class Api {
-  constructor(baseUrl, token) {
-    this._baseUrl = baseUrl
-    this._token = token
-  }
-
-  _checkResponse(res) {
-    if (res) {
-      return res.json()
-    } return Promise.reject(`Ошибка: ${res.status}`)
-  }
-
-  getInfo() {
-    return fetch(`${this._baseUrl}/users/me`, {
-      method: 'GET',
-      headers:
-      {
-        authorization: this._token
-      },
-    }).then(this._checkResponse)
-  }
-
-  setInfo(data) {
-    return fetch(`${this._baseUrl}/users/me`, {
-      method: 'PATCH',
-      headers:
-      {
-        authorization: this._token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: data.name,
-        about: data.about
-      }),
-    }).then(this._checkResponse)
-  }
-
-  getStartCards() {
-    return fetch(`${this._baseUrl}/cards`, {
-      method: 'GET',
-      headers:
-      {
-        authorization: this._token
-      }
-    }).then(this._checkResponse)
-  }
-
-  postCard(data) {
-    return fetch(`${this._baseUrl}/cards`, {
-      method: 'POST',
-      headers:
-      {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: data.name,
-        link: data.link
-      })
-    }).then(this._checkResponse)
-  }
-
-  deleteCard(_id) {
-    return fetch(`${this._baseUrl}/cards/${_id}`, {
-      method: 'DELETE',
-      headers:
-      {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      }
-    }).then(() => {
-      this._checkResponse
-    })
-  }
-
-  activeLike(data) {
-    return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
-      method: 'PUT',
-      headers:
-      {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      }
-    }).then(this._checkResponse)
-  }
-
-
-  deactiveLike(data) {
-    return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
-      method: 'DELETE',
-      headers:
-      {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      }
-    }).then(this._checkResponse)
-  }
-
-  setAvatar(data) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
-      method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        avatar: data.avatar
-      })
-    }).then(this._parseResponse)
-  }
-}
 //Создание Классов\\
 //Api
 const api = new Api('https://mesto.nomoreparties.co/v1/cohort-27', '40f69e37-e35f-44b4-a4bd-e53ae77f767e')
