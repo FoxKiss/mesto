@@ -1,4 +1,4 @@
-.profile_avatar_edit {
+.profile_avatar-edit {
   opacity: 0;
   width: 100%;
   height: 100%;
@@ -15,6 +15,6 @@
   transition: 0.5s;
 }
 
-.profile_avatar_edit:hover {
+.profile_avatar-edit:hover {
   opacity: 1;
 }
