@@ -2,7 +2,7 @@ import '../pages/style.css';
 
 import { validationConfig, FormValidator } from '../components/FormValidator.js'
 import Card from '../components/Card.js'
-import UserInfo from '../components/User.info.js'
+import UserInfo from '../components/Userinfo.js'
 import PopupWithImage from '../components/PopupWithImage.js'
 import PopupWithForm from '../components/PopupWithForm.js'
 import Section from '../components/Section.js'
@@ -13,12 +13,12 @@ import {
   cardTemplate, deletePopup, deleteSubmitButton, avatarPopup, profileAvatar, avatarEditButton, avatarForm
 } from '../utils/constants.js'
 import PopupWithDelete from '../components/popupWithDelete.js';
-const currentUser = 'b488a961da3702e22c420ff1'
+
 
 //Создание Классов\\
 //Api
 const api = new Api('https://mesto.nomoreparties.co/v1/cohort-27', '40f69e37-e35f-44b4-a4bd-e53ae77f767e')
-
+let currentUserId = ''
 //PopupWithForm для Карточек ,Профиля и Аватара
 const popupWithCard = new PopupWithForm(cardPopup,
   {
@@ -41,6 +41,7 @@ const popupWithProfile = new PopupWithForm(profilePopup,
       api.setInfo(data)
         .then((data) => {
           userInfo.setUserInfo(data)
+          popupWithProfile.closePopup()
         })
     }
   })
@@ -75,7 +76,7 @@ const cardsSection = new Section({
 }, cardsList)
 //Класс Card и функция создания карточек
 function createCard(item) {
-  const card = new Card(item, cardTemplate, handleCardClick, currentUser,
+  const card = new Card(item, cardTemplate, handleCardClick, currentUserId,
     () => {
       popupWithDelete.openPopup()
       popupWithDelete.getSubmit(() => {
@@ -130,6 +131,7 @@ function handleCardClick(evt) {
   popupWithImage.openPopup(evt)
 }
 
+
 //Валидация\\
 const profileFormValidation = new FormValidator(validationConfig, profileForm)
 profileFormValidation.enableValidation()
@@ -139,15 +141,16 @@ const avatarFormValidation = new FormValidator(validationConfig, avatarForm)
 avatarFormValidation.enableValidation()
 
 //Начальная информация о пользователе и Карточки с сервера
+
 Promise.all([api.getInfo(), api.getStartCards()])
   .then(([userData, cards]) => {
+    currentUserId = userData._id
     userInfo.setUserInfo(userData)
     cardsSection.renderItems(cards)
   })
   .catch((err) => {
     console.log(`Ошибка: ${err.status}`)
   });
-
 //
 profileEditButton.addEventListener('click', openProfilePopup)
 popupWithProfile.setEventListeners()
@@ -158,9 +161,3 @@ popupWithCard.setEventListeners()
 avatarEditButton.addEventListener('click', openAvatarPopup)
 popupWithDelete.setEventListeners()
 popupWithAvatar.setEventListeners()
-
-
-
-
-
-cardsSection.renderItems()

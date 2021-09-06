@@ -1,5 +1,3 @@
-import { avatarPopup } from "../utils/constants"
-
 export default class UserInfo {
   constructor(name, about, avatar) {
     this._name = name

@@ -4,7 +4,7 @@ export default class Card {
     this._cardLink = card.link
     this._cardName = card.name
     this._userId = card.owner._id
-    this._currentUser = currentUser
+    this._currentUserId = currentUser
     this._cardTemplate = template
     this._cardElement = this._getTemplate()
     this._handleCardClick = handleCardClick
@@ -29,7 +29,7 @@ export default class Card {
     this._cardElement.querySelector('.cards__name').textContent = this._cardName
     this._cardElement.querySelector('.cards__like-number').textContent = this._countLike.length
     this._cardDeleteButton = this._cardElement.querySelector('.cards__delete-button')
-    if (this._userId === this._currentUser) {
+    if (this._userId === this._currentUserId) {
       this._cardDeleteButton.classList.remove('hide_delete-button')
     }
     this._setEventListeners()
@@ -63,7 +63,7 @@ export default class Card {
 
   _currentUserLike() {
     this._countLike.forEach((like) => {
-      if(like._id === this._currentUser) {
+      if(like._id === this._currentUserId) {
         this._cardLikeButton.classList.add('cards__like-button_active')
       }
     })
